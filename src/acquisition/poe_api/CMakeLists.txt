@@ -1,0 +1,25 @@
+target_sources(acquisition PRIVATE
+    account.h
+    character.h
+    cruciblenode.h
+    displaymode.h
+    eventladderentry.h
+    frametype.h
+    guild.h
+    item.h
+    itemfilter.h
+    itemjeweldata.h
+    itemproperty.h
+    itemsocket.h
+    ladderentry.h
+    league.h
+    leagueaccount.h
+    leaguerule.h
+    passivegroup.h
+    passivenode.h
+    publicstashchange.h
+    pvpladderteamentry.h
+    pvpladderteammember.h
+    pvpmatch.h
+    stashtab.h
+)

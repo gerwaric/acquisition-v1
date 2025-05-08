@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.19)
+cmake_minimum_required(VERSION 3.22)
 
 project(acquisition
     VERSION 1.0
@@ -10,25 +10,11 @@ project(acquisition
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-include(FetchContent)
-
-FetchContent_Declare(
-    boost-headers-only
-    GIT_REPOSITORY https://github.com/gerwaric/boost-headers-only.git
-    GIT_TAG        boost-1.86.0
-)
-FetchContent_Declare(
-    spdlog
-    GIT_REPOSITORY https://github.com/gabime/spdlog.git
-    GIT_TAG        v1.15.2
-)
-FetchContent_Declare(
-    json_struct
-    GIT_REPOSITORY https://github.com/jorgen/json_struct.git
-    GIT_TAG        1.0.1
-)
-
-FetchContent_MakeAvailable(boost-headers-only json_struct spdlog)
+# Compiler options must be set before calling the qt project setup.
+if(MSVC)
+    add_compile_options(/EHsc)
+    add_compile_options(/W4)
+endif()
 
 find_package(Qt6 REQUIRED COMPONENTS
     HttpServer
@@ -38,12 +24,42 @@ find_package(Qt6 REQUIRED COMPONENTS
     WebSockets
 )
 
-# Compiler options must be set before calling the qt project setup.
-if(MSVC)
-    add_compile_options(/EHsc)
-    add_compile_options(/W4)
-endif()
-
 qt_standard_project_setup(REQUIRES 6.9)
 
-add_subdirectory(acquisition)
+include(cmake/FetchDependencies.cmake)
+
+qt_add_executable(acquisition)
+
+add_subdirectory(src)
+add_subdirectory(qml)
+
+target_link_libraries(acquisition PRIVATE
+    Qt6::HttpServer
+    Qt6::Network
+    Qt6::Quick
+    Qt6::Sql
+    Qt6::WebSockets
+    #boost-headers-only
+    json_struct
+    spdlog
+)
+
+# Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
+# If you are developing for iOS or macOS you should consider setting an
+# explicit, fixed bundle identifier manually though.
+set_target_properties(acquisition PROPERTIES
+    MACOSX_BUNDLE_GUI_IDENTIFIER com.gerwaric.acquisition
+    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
+    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
+    MACOSX_BUNDLE TRUE
+    WIN32_EXECUTABLE TRUE
+)
+
+include(GNUInstallDirs)
+install(TARGETS acquisition
+    BUNDLE DESTINATION .
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
+
+
