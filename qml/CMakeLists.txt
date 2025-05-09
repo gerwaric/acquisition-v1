@@ -1,7 +1,9 @@
-
-qt_add_qml_module(acquisition
-    URI Acquisition
+qt_add_qml_module(acquisition_qml
+    URI com.gerwaric.acquisition
     VERSION 1.0
+    STATIC
+    OUTPUT_DIRECTORY
+        com/gerwaric/acquisition
     QML_FILES
         ActionListMenu.qml
         AuthenticationTab.qml
@@ -9,7 +11,6 @@ qt_add_qml_module(acquisition
         FilterSettingsDialog.qml
         FilterPanel.qml
         Main.qml
-        #[[
         MainMenuBar.qml
         ResultsPanel.qml
         SearchTab.qml
@@ -25,5 +26,4 @@ qt_add_qml_module(acquisition
         TradeFilters/TypeFilters.qml
         TradeFilters/UltimatumFilters.qml
         TradeFilters/WeaponFilters.qml
-        #]]
 )

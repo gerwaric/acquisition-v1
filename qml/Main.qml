@@ -8,7 +8,7 @@ ApplicationWindow {
     visible: true
     title: "Acquisition"
 
-/*
+    Label { text: "Hello" }
 
     menuBar: MainMenuBar {}
 
@@ -88,6 +88,4 @@ ApplicationWindow {
             }
         }
     }
-
-*/
 }

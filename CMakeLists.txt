@@ -16,17 +16,17 @@ if(MSVC)
     add_compile_options(/W4)
 endif()
 
+include(cmake/FetchDependencies.cmake)
+
 find_package(Qt6 REQUIRED COMPONENTS
+    Core
     HttpServer
     Network
     Quick
     Sql
     WebSockets
 )
-
 qt_standard_project_setup(REQUIRES 6.9)
-
-include(cmake/FetchDependencies.cmake)
 
 qt_add_executable(acquisition)
 
@@ -39,9 +39,10 @@ target_link_libraries(acquisition PRIVATE
     Qt6::Quick
     Qt6::Sql
     Qt6::WebSockets
-    #boost-headers-only
+    boost-headers-only
     json_struct
     spdlog
+    acquisition_qml
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
