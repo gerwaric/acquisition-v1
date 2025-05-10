@@ -40,6 +40,7 @@ target_link_libraries(acquisition PRIVATE
     Qt6::Sql
     Qt6::WebSockets
     boost-headers-only
+    crashpad
     json_struct
     spdlog
     acquisition_qml

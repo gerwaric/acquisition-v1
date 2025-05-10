@@ -13,7 +13,7 @@ if(NOT TARGET spdlog)
     FetchContent_Declare(
         spdlog
         GIT_REPOSITORY https://github.com/gabime/spdlog.git
-        GIT_TAG        v1.15.2
+        GIT_TAG        v1.15.3
     )
     FetchContent_MakeAvailable(spdlog)
 endif()
@@ -25,4 +25,13 @@ if(NOT TARGET json_struct)
         GIT_TAG        1.0.1
     )
     FetchContent_MakeAvailable(json_struct)
+endif()
+
+if(NOT TARGET crashpad-binaries)
+    FetchContent_Declare(
+        crashpad-binaries
+        GIT_REPOSITORY https://github.com/gerwaric/crashpad-binaries.git
+        GIT_TAG        main
+    )
+    FetchContent_MakeAvailable(crashpad-binaries)
 endif()
