@@ -1,6 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlEngine>
+#include <QQmlExtensionPlugin>
 
 #include <acquisition/model/treemodel.h>
 
@@ -16,8 +17,7 @@ int main(int argc, char *argv[])
 		[]() { QCoreApplication::exit(-1); },
 		Qt::QueuedConnection);
 
-
-	engine.loadFromModule("com.gerwaric.acquisition", "Main");
+	engine.loadFromModule("Acquisition", "Main");
 
 	return app.exec();
 }

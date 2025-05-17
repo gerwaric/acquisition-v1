@@ -2,6 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
+import AppWindow
+
 ApplicationWindow {
     width: 800
     height: 600

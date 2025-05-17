@@ -7,6 +7,7 @@ project(acquisition
     HOMEPAGE_URL "https://github.com/gerwaric/acquisition-v1"
 )
 
+set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -26,24 +27,41 @@ find_package(Qt6 REQUIRED COMPONENTS
     Sql
     WebSockets
 )
+
 qt_standard_project_setup(REQUIRES 6.9)
 
-qt_add_executable(acquisition)
+# Define the executable target.
+qt_add_executable(acquisition WIN32 MACOSX_BUNDLE)
 
+# Add source files to the executable target.
 add_subdirectory(src)
-add_subdirectory(qml)
+
+# Define the main QML module.
+qt_add_qml_module(acquisition
+    URI Acquisition
+    QML_FILES
+        qml/Main.qml
+)
+
+# Include other QML modules so we can link and import them.
+add_subdirectory(qml/AppWindow)
+add_subdirectory(qml/TradeFilters)
 
 target_link_libraries(acquisition PRIVATE
+    # Qt libraries
     Qt6::HttpServer
     Qt6::Network
     Qt6::Quick
     Qt6::Sql
     Qt6::WebSockets
+    # Third-party libraries
     boost-headers-only
     crashpad
     json_struct
     spdlog
-    acquisition_qml
+    # QML modules
+    AppWindow_plugin
+    TradeFilters_plugin
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
@@ -63,5 +81,3 @@ install(TARGETS acquisition
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
-
-
