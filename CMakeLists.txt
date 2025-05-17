@@ -17,8 +17,6 @@ if(MSVC)
     add_compile_options(/W4)
 endif()
 
-include(cmake/FetchDependencies.cmake)
-
 find_package(Qt6 REQUIRED COMPONENTS
     Core
     HttpServer
@@ -33,20 +31,19 @@ qt_standard_project_setup(REQUIRES 6.9)
 # Define the executable target.
 qt_add_executable(acquisition WIN32 MACOSX_BUNDLE)
 
-# Add source files to the executable target.
+# Add source files.
 add_subdirectory(src)
 
-# Define the main QML module.
-qt_add_qml_module(acquisition
-    URI Acquisition
-    QML_FILES
-        qml/Main.qml
-)
+# Add QML modules.
+add_subdirectory(qml)
 
-# Include other QML modules so we can link and import them.
-add_subdirectory(qml/AppWindow)
-add_subdirectory(qml/TradeFilters)
+# Add icons, images, and other assets.
+add_subdirectory(resources)
 
+# External dependencies are retrieved with FetchContent.
+include(cmake/FetchDependencies.cmake)
+
+# Link Qt and third-party libraries.
 target_link_libraries(acquisition PRIVATE
     # Qt libraries
     Qt6::HttpServer
@@ -59,16 +56,13 @@ target_link_libraries(acquisition PRIVATE
     crashpad
     json_struct
     spdlog
-    # QML modules
-    AppWindow_plugin
-    TradeFilters_plugin
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
 # explicit, fixed bundle identifier manually though.
 set_target_properties(acquisition PROPERTIES
-    MACOSX_BUNDLE_GUI_IDENTIFIER com.gerwaric.acquisition
+    MACOSX_BUNDLE_GUI_IDENTIFIER acquisition
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
     MACOSX_BUNDLE TRUE

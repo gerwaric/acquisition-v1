@@ -1,0 +1,5 @@
+add_subdirectory(backgrounds)
+add_subdirectory(fonts)
+add_subdirectory(icons)
+add_subdirectory(sockets)
+add_subdirectory(tooltip)
